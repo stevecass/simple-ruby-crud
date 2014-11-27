@@ -147,16 +147,12 @@ class App
     results.each do |person|
       puts person.to_display
     end
-
     show_status "Found #{results.size} "
     puts "Press enter to continue"
     gets
-
-
   end
 
 end
-
 
 class PeoplePersister
   
