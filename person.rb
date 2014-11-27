@@ -19,11 +19,9 @@ class Person
     instance_variables.each do |var| 
       key = var.to_s.delete("@")
       val = instance_variable_get(var) 
-
       if key == 'created_at' # handle time to string conversion
         val = TimeHelper.iso_string val
       end
-
       hash[key] = val
     end
     hash
