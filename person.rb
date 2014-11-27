@@ -21,7 +21,7 @@ class Person
       val = instance_variable_get(var) 
 
       if key == 'created_at' # handle time to string conversion
-        val = TimeHelper.time_string_for_file val
+        val = TimeHelper.iso_string val
       end
 
       hash[key] = val

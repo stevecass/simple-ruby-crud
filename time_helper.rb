@@ -6,7 +6,7 @@ module TimeHelper
    Time.parse(str)
   end
 
-  def self.time_string_for_file date
+  def self.iso_string date
     date.utc.iso8601
   end
 
