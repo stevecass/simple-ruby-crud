@@ -129,12 +129,10 @@ class App
   
   def find_by(by, val)
     return [] if val == nil || by == nil
-    results = []
-    results << @people.values.select do |p| 
+    @people.values.select do |p| 
       res = p.send(by) 
       res && val.to_s == res.to_s
     end
-    results.flatten
   end
 
   def find_people
@@ -143,7 +141,6 @@ class App
     print "What should it match? "
     val = gets.chomp
     results = find_by(field, val)
-    results.flatten!
     results.each do |person|
       puts person.to_display
     end
