@@ -2,8 +2,7 @@ require_relative 'time_helper'
 
 class Person
   attr_accessor :id, :first_name, :last_name, :email, :phone, :created_at
-  # Look at the above CSV file
-  # What attributes should a Person object have?
+
   def initialize(list = {})
     @id = list.fetch(:id,0).to_i
     @first_name = list[:first_name]
