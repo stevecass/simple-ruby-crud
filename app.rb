@@ -1,5 +1,6 @@
 require_relative 'parser'
 require_relative 'person'
+require_relative 'view'
 require 'colorize'
 
 class App
@@ -7,7 +8,7 @@ class App
   def initialize
     @people = {}
     PeoplePersister.load_people.each { |person| @people[person.id] = person }
-    puts "Loaded #{@people.length} people"
+    View.show_status "Loaded #{@people.length} people"
     until @quit_requested do 
       main_loop
     end
@@ -15,40 +16,11 @@ class App
 
   def save_people
     PeoplePersister.save_people @people.values
-    show_status "People collection saved. There are #{@people.count} people."
+    View.show_status "People collection saved. There are #{@people.count} people."
   end
 
-  def cls
-    print "\e[2J"
-    print "\e[H"
-  end
-
-  def show_status s
-    puts s.colorize(:green)
-    sleep 1
-  end
-
-  def warn s
-    puts s.colorize(:orange)
-    sleep 1
-  end
-
-  def show_error s
-    puts s.colorize(:red)
-    sleep 1
-  end
-
-  def show_menu
-    cls
-    puts "What do you want to do?"
-    puts "C - create a new person"
-    puts "R - retrieve a person / some people"
-    puts "U - update a record "
-    puts "D - delete a person"
-    puts "Q - quit"
-    puts "We are managing #{@people.count} people."
-
-    input = gets.chomp
+  def main_loop
+    input = View.show_menu @people
 
     case input.upcase
     when 'C'
@@ -65,27 +37,14 @@ class App
 
   end
 
-  def main_loop
-    show_menu
-  end
-
   def do_deletion
-    print "Enter id of a person to delete: "
-    id = gets.chomp.to_i
-    print "Are you sure? "
-    reply = gets.chomp
-    remove_person(id) if reply.upcase == "Y"
+    id = View.prompt_for_id 'delete'
+    remove_person(id) if View.prompt_for_confirmation
   end
 
   def remove_person id
     @people.delete(id)
     save_people
-  end
-
-
-  def text_entered
-    s = gets.chomp
-    s == '_' ? nil : s
   end
 
   def do_update
